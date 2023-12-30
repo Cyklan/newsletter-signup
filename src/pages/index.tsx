@@ -10,14 +10,16 @@ export default function Home() {
     const email = form.elements[0] as HTMLInputElement;
     const data = { email: email.value };
 
-    fetch("/api/register-email", {
-      method: "POST",
-      body: JSON.stringify(data),
+    fetch("/api/register-email?email=" + data.email, {
+      method: "GET",
       headers: new Headers({
         "Content-Type": "application/json",
       }),
     })
-      .then(() => {
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
         form.reset();
         setStatus("done");
       })
@@ -45,7 +47,9 @@ export default function Home() {
               Email-Adresse eintragen und gespannt ins Postfach schauen, bald
               gibts dann tolle Emails von uns!
               <br />
-              <span className="italic">Har det så bra, vi ses! - Svenja, Nils & Laska</span>
+              <span className="italic">
+                Har det så bra, vi ses! - Svenja, Nils & Laska
+              </span>
             </p>
 
             <form
